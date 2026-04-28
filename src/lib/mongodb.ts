@@ -17,21 +17,23 @@ if (!cached) {
 }
 
 async function dbConnect() {
-  if (cached.conn) {
-    return cached.conn;
+  const currentCached = cached!; // Guaranteed by check above
+  
+  if (currentCached.conn) {
+    return currentCached.conn;
   }
 
-  if (!cached.promise) {
+  if (!currentCached.promise) {
     const opts = {
       bufferCommands: false,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+    currentCached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       return mongoose;
     });
   }
-  cached.conn = await cached.promise;
-  return cached.conn;
+  currentCached.conn = await currentCached.promise;
+  return currentCached.conn;
 }
 
 export default dbConnect;

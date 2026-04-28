@@ -7,6 +7,7 @@ import { Shield, CheckCircle, Clock, AlertTriangle, ArrowRight, ExternalLink, Za
 import { ADMIN_WALLET, sorobanRpc, MARKETPLACE_ID, NFT_ID, NATIVE_TOKEN_ID, NETWORK_PASSPHRASE, NFTMKT_ASSET_CODE, NFTMKT_ISSUER, horizon, addrToScVal, idToScVal } from "@/lib/stellar";
 import { TransactionBuilder, Address, Contract, nativeToScVal, xdr, StrKey, Asset, Operation } from "@stellar/stellar-sdk";
 import { triggerSuccessBurst } from "@/lib/effects";
+import { NFT } from "@/types";
 import Link from "next/link";
 
 export default function AdminPanel() {

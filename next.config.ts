@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
   serverExternalPackages: [],
 };
 
-// @ts-expect-error: Custom property for dev origins
-nextConfig.allowedDevOrigins = ["172.17.11.120", "localhost:3000"];
+// Allow custom dev origins for external device testing
+(nextConfig as Record<string, any>).allowedDevOrigins = ["172.17.11.120", "localhost:3000"];
 
 export default nextConfig;

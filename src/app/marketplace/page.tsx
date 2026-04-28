@@ -135,7 +135,7 @@ export default function Marketplace() {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleBuy = async (id: number) => {
+  const handleBuy = async (id: number | string) => {
     if (!address) {
       connect();
       return;
