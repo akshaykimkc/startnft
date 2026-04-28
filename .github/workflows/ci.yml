@@ -48,7 +48,7 @@ jobs:
 
       - name: Build Contracts
         run: |
-          cargo build -p royalty_splitter --target wasm32-unknown-unknown --release
+          cargo build -p royalty-splitter --target wasm32-unknown-unknown --release
           cargo build --target wasm32-unknown-unknown --release
 
       - name: Run Contract Tests
