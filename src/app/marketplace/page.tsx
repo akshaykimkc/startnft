@@ -17,6 +17,8 @@ import { NFT } from "@/types";
 export default function Marketplace() {
   const { address, connect, sign } = useStellar();
   const [nfts, setNfts] = useState<NFT[]>([]);
+  const [isMinting, setIsMinting] = useState(false);
+  const [mintStatus, setMintStatus] = useState<string | null>(null);
   const [isMintModalOpen, setIsMintModalOpen] = useState(false);
 
   const isAdmin = address === ADMIN_WALLET;

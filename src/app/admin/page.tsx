@@ -283,7 +283,7 @@ export default function AdminPanel() {
                     <div className="flex items-center gap-6">
                       <div className="w-20 h-20 rounded-2xl overflow-hidden bg-indigo-50 shadow-inner">
                         {nft.imageUrl ? (
-                          <Image src={nft.imageUrl || nft.image} alt={nft.name} width={80} height={80} className="w-full h-full object-cover" />
+                          <Image src={nft.imageUrl} alt={nft.name} width={80} height={80} className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-indigo-200">
                             <Package size={32} />
