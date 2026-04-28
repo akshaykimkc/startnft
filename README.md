@@ -57,7 +57,15 @@ graph TD
 - Stellar CLI (for contract testing)
 - Freighter Wallet extension
 
-### Setup
+### Smart Contracts
+1. Install Rust target: `rustup target add wasm32-unknown-unknown`
+2. Build all contracts:
+   ```bash
+   stellar contract build
+   ```
+   *Note: This generates the necessary WASM files in the target directory required for inter-contract imports.*
+
+### Frontend
 1. Clone the repository
 2. Install dependencies:
    ```bash
