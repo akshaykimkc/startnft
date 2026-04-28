@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { HORIZON_URL, MARKETPLACE_ID } from "@/lib/stellar";
+import { HORIZON_URL } from "@/lib/stellar";
 import { formatDistanceToNow } from "date-fns";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface SaleEvent {
   id: string;
@@ -15,7 +15,6 @@ interface SaleEvent {
 
 export default function SalesFeed() {
   const [sales, setSales] = useState<SaleEvent[]>([]);
-  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     const url = `${HORIZON_URL}/transactions?cursor=now&order=asc`;

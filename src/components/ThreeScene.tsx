@@ -67,12 +67,12 @@ export default function ThreeScene() {
       renderer.setSize(window.innerWidth, window.innerHeight);
     };
 
+    const currentContainer = containerRef.current;
     window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("resize", handleResize);
       renderer.dispose();
-      const currentContainer = containerRef.current;
       if (currentContainer) {
         currentContainer.removeChild(renderer.domElement);
       }

@@ -1,13 +1,12 @@
 "use client";
 
 import { useStellar } from "@/context/StellarContext";
-import SalesFeed from "@/components/SalesFeed";
 import NFTCard from "@/components/NFTCard";
 import ThreeScene from "@/components/ThreeScene";
-import { Wallet, Plus, ShoppingBag, Zap, Loader2, Search, Filter, ArrowLeft, Layout } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { RPC_URL, NFT_ID, MARKETPLACE_ID, SPLITTER_ID, NATIVE_TOKEN_ID, NETWORK_PASSPHRASE, sorobanRpc, addrToScVal, idToScVal } from "@/lib/stellar";
-import { TransactionBuilder, Address, Contract, nativeToScVal, xdr, StrKey } from "@stellar/stellar-sdk";
+import { Wallet, Plus, Zap, Search, Layout } from "lucide-react";
+import { motion } from "framer-motion";
+import { NFT_ID, MARKETPLACE_ID, SPLITTER_ID, NATIVE_TOKEN_ID, NETWORK_PASSPHRASE, sorobanRpc, addrToScVal, idToScVal } from "@/lib/stellar";
+import { TransactionBuilder, Contract, nativeToScVal } from "@stellar/stellar-sdk";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { triggerClickEffect, triggerSuccessBurst } from "@/lib/effects";
@@ -16,9 +15,7 @@ import { ADMIN_WALLET } from "@/lib/stellar";
 import { NFT } from "@/types";
 
 export default function Marketplace() {
-  const { address, error, connect, sign } = useStellar();
-  const [isMinting, setIsMinting] = useState(false);
-  const [mintStatus, setMintStatus] = useState<string | null>(null);
+  const { address, connect, sign } = useStellar();
   const [nfts, setNfts] = useState<NFT[]>([]);
   const [isMintModalOpen, setIsMintModalOpen] = useState(false);
 

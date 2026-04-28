@@ -16,6 +16,6 @@ const nextConfig: NextConfig = {
 };
 
 // Allow custom dev origins for external device testing
-(nextConfig as Record<string, any>).allowedDevOrigins = ["172.17.11.120", "localhost:3000"];
+(nextConfig as Record<string, unknown>).allowedDevOrigins = ["172.17.11.120", "localhost:3000"];
 
 export default nextConfig;

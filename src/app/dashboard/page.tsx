@@ -5,13 +5,10 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Layout, 
-  Clock, 
   CheckCircle, 
   ShoppingBag, 
   Zap, 
   Search, 
-  Filter, 
-  ExternalLink, 
   ArrowLeft,
   Package,
   TrendingUp,
@@ -21,10 +18,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import ThreeScene from "@/components/ThreeScene";
-import { triggerClickEffect, triggerSuccessBurst } from "@/lib/effects";
+import { triggerSuccessBurst } from "@/lib/effects";
 import NFTCard from "@/components/NFTCard";
-import { RPC_URL, MARKETPLACE_ID, NETWORK_PASSPHRASE, sorobanRpc, NFTMKT_ASSET_CODE, NFTMKT_ISSUER, horizon, addrToScVal, idToScVal } from "@/lib/stellar";
-import { TransactionBuilder, Address, Contract, xdr, StrKey, Asset, Operation, nativeToScVal } from "@stellar/stellar-sdk";
+import { MARKETPLACE_ID, NETWORK_PASSPHRASE, sorobanRpc, NFTMKT_ASSET_CODE, NFTMKT_ISSUER, horizon, addrToScVal, idToScVal } from "@/lib/stellar";
+import { TransactionBuilder, Contract, Asset, Operation } from "@stellar/stellar-sdk";
 import { NFT } from "@/types";
 
 export default function UserDashboard() {
@@ -157,6 +154,7 @@ export default function UserDashboard() {
       checkTrustline();
     }, 0);
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
   const stats = {

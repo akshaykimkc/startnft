@@ -2,7 +2,7 @@
 
 import { useStellar } from "@/context/StellarContext";
 import ThreeScene from "@/components/ThreeScene";
-import { Zap, Shield, Rocket, Globe, ArrowRight, Wallet } from "lucide-react";
+import { Zap, Shield, Globe, ArrowRight, Wallet } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { triggerClickEffect } from "@/lib/effects";
@@ -13,7 +13,7 @@ export default function Home() {
   const features = [
     {
       title: "Soroban Powered",
-      desc: "Built on Stellar&apos;s high-performance smart contract platform for near-instant execution.",
+      desc: "Built on Stellar's high-performance smart contract platform for near-instant execution.",
       icon: <Zap className="text-indigo-600" />,
     },
     {

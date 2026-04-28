@@ -1,9 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Plus, Sparkles, Loader2 } from "lucide-react";
-import { triggerClickEffect } from "@/lib/effects";
 import { createNFTAction } from "@/app/actions/nft";
 
 interface MintModalProps {
@@ -134,7 +134,13 @@ export default function MintModal({ isOpen, onClose, creatorAddress }: MintModal
                   >
                     {formData.imageUrl ? (
                       <div className="relative w-24 h-24 rounded-xl overflow-hidden shadow-lg">
-                        <img src={formData.imageUrl} className="w-full h-full object-cover" alt="Preview" />
+                        <Image 
+                          src={formData.imageUrl} 
+                          alt="NFT Preview" 
+                          width={500} 
+                          height={500} 
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                        />
                         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                           <Plus size={20} className="text-white" />
                         </div>

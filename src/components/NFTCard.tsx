@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
+import { motion } from "framer-motion";
 import { ShoppingBag } from "lucide-react";
 import { triggerClickEffect } from "@/lib/effects";
 
@@ -45,9 +46,11 @@ export default function NFTCard({ id, name, price, royalty, creator, imageUrl, i
       <div className="aspect-square bg-indigo-50 flex items-center justify-center relative overflow-hidden">
         <div className="absolute inset-0 bg-indigo-600/5 group-hover:bg-indigo-600/10 transition-colors" />
         {imageUrl ? (
-          <img 
+          <Image 
             src={imageUrl} 
             alt={name} 
+            width={500}
+            height={500}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
         ) : (

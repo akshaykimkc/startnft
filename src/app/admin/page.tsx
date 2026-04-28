@@ -5,10 +5,11 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Shield, CheckCircle, Clock, AlertTriangle, ArrowRight, ExternalLink, Zap, Package, User } from "lucide-react";
 import { ADMIN_WALLET, sorobanRpc, MARKETPLACE_ID, NFT_ID, NATIVE_TOKEN_ID, NETWORK_PASSPHRASE, NFTMKT_ASSET_CODE, NFTMKT_ISSUER, horizon, addrToScVal, idToScVal } from "@/lib/stellar";
-import { TransactionBuilder, Address, Contract, nativeToScVal, xdr, StrKey, Asset, Operation } from "@stellar/stellar-sdk";
+import { TransactionBuilder, Contract, nativeToScVal, Asset, Operation } from "@stellar/stellar-sdk";
 import { triggerSuccessBurst } from "@/lib/effects";
 import { NFT } from "@/types";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function AdminPanel() {
   const { address, sign } = useStellar();
@@ -282,7 +283,7 @@ export default function AdminPanel() {
                     <div className="flex items-center gap-6">
                       <div className="w-20 h-20 rounded-2xl overflow-hidden bg-indigo-50 shadow-inner">
                         {nft.imageUrl ? (
-                          <img src={nft.imageUrl} className="w-full h-full object-cover" />
+                          <Image src={nft.imageUrl || nft.image} alt={nft.name} width={80} height={80} className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-indigo-200">
                             <Package size={32} />
