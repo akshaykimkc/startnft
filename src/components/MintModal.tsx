@@ -52,8 +52,8 @@ export default function MintModal({ isOpen, onClose, creatorAddress }: MintModal
       } else {
         throw new Error(result.error || "Submission failed");
       }
-    } catch (err: any) {
-      setStatus(`Error: ${err.message}`);
+    } catch (err: unknown) {
+      setStatus(`Error: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setIsSubmitting(false);
     }

@@ -25,10 +25,11 @@ import { triggerClickEffect, triggerSuccessBurst } from "@/lib/effects";
 import NFTCard from "@/components/NFTCard";
 import { RPC_URL, MARKETPLACE_ID, NETWORK_PASSPHRASE, sorobanRpc, NFTMKT_ASSET_CODE, NFTMKT_ISSUER, horizon, addrToScVal, idToScVal } from "@/lib/stellar";
 import { TransactionBuilder, Address, Contract, xdr, StrKey, Asset, Operation, nativeToScVal } from "@stellar/stellar-sdk";
+import { NFT } from "@/types";
 
 export default function UserDashboard() {
   const { address, connect, sign } = useStellar();
-  const [myNfts, setMyNfts] = useState<any[]>([]);
+  const [myNfts, setMyNfts] = useState<NFT[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState("all"); // all, pending, listed, sold, owned
   const [actionStatus, setActionStatus] = useState<string | null>(null);
@@ -48,7 +49,7 @@ export default function UserDashboard() {
     throw new Error("Confirmation timed out");
   };
 
-  const handleDeList = async (nft: any) => {
+  const handleDeList = async (nft: NFT) => {
     setActionStatus(`Removing ${nft.name}...`);
     try {
       if (nft.status === "listed") {
@@ -80,9 +81,9 @@ export default function UserDashboard() {
 
       triggerSuccessBurst();
       fetchMyNfts();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      alert(`Error: ${err.message}`);
+      alert(`Error: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setActionStatus(null);
     }
@@ -93,7 +94,7 @@ export default function UserDashboard() {
     setIsCheckingTrustline(true);
     try {
       const account = await horizon.loadAccount(address);
-      const exists = account.balances.some((b: any) => 
+      const exists = (account.balances as Array<{ asset_code?: string; asset_issuer?: string }>).some((b) => 
         b.asset_code === NFTMKT_ASSET_CODE && b.asset_issuer === NFTMKT_ISSUER
       );
       setHasTrustline(exists);
@@ -125,9 +126,9 @@ export default function UserDashboard() {
       setHasTrustline(true);
       triggerSuccessBurst();
       alert("Successfully enabled rewards!");
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      alert(`Error: ${err.message}`);
+      alert(`Error: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setActionStatus(null);
     }
@@ -140,7 +141,7 @@ export default function UserDashboard() {
       const res = await fetch("/api/nfts");
       const data = await res.json();
       if (Array.isArray(data)) {
-        const filtered = data.filter((n: any) => n.creator === address || n.owner === address);
+        const filtered = data.filter((n: NFT) => n.creator === address || n.owner === address);
         setMyNfts(filtered);
       }
     } catch (err) {
@@ -151,8 +152,11 @@ export default function UserDashboard() {
   };
 
   useEffect(() => {
-    fetchMyNfts();
-    checkTrustline();
+    const timer = setTimeout(() => {
+      fetchMyNfts();
+      checkTrustline();
+    }, 0);
+    return () => clearTimeout(timer);
   }, [address]);
 
   const stats = {
@@ -301,7 +305,7 @@ export default function UserDashboard() {
             </div>
             <div className="space-y-2">
               <h3 className="text-2xl font-bold text-indigo-950">No assets found</h3>
-              <p className="text-indigo-400">You haven't minted any NFTs matching this filter yet.</p>
+              <p className="text-indigo-400">You haven&apos;t minted any NFTs matching this filter yet.</p>
             </div>
             <Link href="/marketplace">
               <button className="bg-indigo-600 text-white px-8 py-4 rounded-2xl font-bold mt-4 shadow-lg shadow-indigo-600/20 hover:bg-indigo-700 transition-all">

@@ -7,8 +7,8 @@ export async function GET() {
     await dbConnect();
     const nfts = await NFT.find({}).sort({ createdAt: -1 });
     return NextResponse.json(nfts);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: error instanceof Error ? error.message : String(error) }, { status: 500 });
   }
 }
 
@@ -19,11 +19,11 @@ export async function POST(req: Request) {
     console.log("POST /api/nfts body:", body);
     const nft = await NFT.create(body);
     return NextResponse.json(nft, { status: 201 });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("POST /api/nfts error:", error);
     return NextResponse.json({ 
-      error: error.message,
-      stack: process.env.NODE_ENV === "development" ? error.stack : undefined 
+      error: error instanceof Error ? error.message : String(error),
+      stack: process.env.NODE_ENV === "development" && error instanceof Error ? error.stack : undefined 
     }, { status: 500 });
   }
 }

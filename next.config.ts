@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
   serverExternalPackages: [],
 };
 
-// @ts-ignore
+// @ts-expect-error: Custom property for dev origins
 nextConfig.allowedDevOrigins = ["172.17.11.120", "localhost:3000"];
 
 export default nextConfig;

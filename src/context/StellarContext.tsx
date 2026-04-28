@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { getAddress, isConnected, setAllowed, signTransaction } from "@stellar/freighter-api";
+import { getAddress, setAllowed, signTransaction } from "@stellar/freighter-api";
 
 interface StellarContextType {
   address: string | null;
@@ -28,7 +28,7 @@ export function StellarProvider({ children }: { children: ReactNode }) {
           setAddress(result.address);
         }
       } catch (err) {
-        // Silent fail for auto-connect
+        console.warn("Auto-connect failed:", err);
       }
     };
     checkConnection();
@@ -63,12 +63,13 @@ export function StellarProvider({ children }: { children: ReactNode }) {
       } else {
         setError("Unable to retrieve address. Please check if Freighter is connected to an account.");
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Connection error:", err);
-      if (err.message?.includes("not found") || err.message?.includes("undefined")) {
+      const message = err instanceof Error ? err.message : String(err);
+      if (message.includes("not found") || message.includes("undefined")) {
         setError("Freighter not detected. Please ensure it is installed and enabled.");
       } else {
-        setError(err.message || "An unexpected error occurred while connecting");
+        setError(message || "An unexpected error occurred while connecting");
       }
     }
   };
@@ -82,8 +83,8 @@ export function StellarProvider({ children }: { children: ReactNode }) {
       if (typeof result === "string") return result; 
       if (result.error) throw new Error(result.error);
       return result.signedTxXdr;
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : String(err));
       throw err;
     }
   };

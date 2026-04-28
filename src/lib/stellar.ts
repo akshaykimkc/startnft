@@ -1,15 +1,8 @@
 import {
   Horizon,
-  Networks,
   rpc,
-  TransactionBuilder,
   Address,
-  Contract,
   nativeToScVal,
-  xdr,
-  StrKey,
-  Asset,
-  Operation,
 } from "@stellar/stellar-sdk";
 
 export const NETWORK_PASSPHRASE = "Test SDF Network ; September 2015";

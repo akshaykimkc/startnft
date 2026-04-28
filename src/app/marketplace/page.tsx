@@ -13,12 +13,13 @@ import Link from "next/link";
 import { triggerClickEffect, triggerSuccessBurst } from "@/lib/effects";
 import MintModal from "@/components/MintModal";
 import { ADMIN_WALLET } from "@/lib/stellar";
+import { NFT } from "@/types";
 
 export default function Marketplace() {
   const { address, error, connect, sign } = useStellar();
   const [isMinting, setIsMinting] = useState(false);
   const [mintStatus, setMintStatus] = useState<string | null>(null);
-  const [nfts, setNfts] = useState<any[]>([]);
+  const [nfts, setNfts] = useState<NFT[]>([]);
   const [isMintModalOpen, setIsMintModalOpen] = useState(false);
 
   const isAdmin = address === ADMIN_WALLET;
@@ -44,8 +45,8 @@ export default function Marketplace() {
         // Normal users only see 'listed' NFTs
         // Admin sees everything (including pending ones they might want to manage)
         const visibleNfts = data
-          .filter((n: any) => n.status === "listed")
-          .map((n: any) => ({ ...n, id: n.tokenId || n.id }));
+          .filter((n: NFT) => n.status === "listed")
+          .map((n: NFT) => ({ ...n, id: n.tokenId || n.id }));
         setNfts(visibleNfts);
       }
     } catch (err) {
@@ -53,7 +54,7 @@ export default function Marketplace() {
     }
   };
 
-  const handleRelease = async (nft: any) => {
+  const handleRelease = async (nft: NFT) => {
     if (!isAdmin) return;
 
     setIsMinting(true);
@@ -119,16 +120,19 @@ export default function Marketplace() {
       triggerSuccessBurst();
       setMintStatus(`${nft.name} successfully verified and released!`);
       fetchNFTs();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      setMintStatus(`Release Error: ${err.message}`);
+      setMintStatus(`Release Error: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setIsMinting(false);
     }
   };
 
   useEffect(() => {
-    fetchNFTs();
+    const timer = setTimeout(() => {
+      fetchNFTs();
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleBuy = async (id: number) => {
@@ -242,9 +246,9 @@ export default function Marketplace() {
       fetchNFTs();
       setMintStatus(`Purchase successful! Hash: ${buyHash.slice(0, 8)}...`);
       setTimeout(() => setMintStatus(null), 5000);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      setMintStatus(`Purchase Error: ${err.message}`);
+      setMintStatus(`Purchase Error: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setIsMinting(false);
     }

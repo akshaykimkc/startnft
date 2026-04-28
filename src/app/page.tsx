@@ -13,7 +13,7 @@ export default function Home() {
   const features = [
     {
       title: "Soroban Powered",
-      desc: "Built on Stellar's high-performance smart contract platform for near-instant execution.",
+      desc: "Built on Stellar&apos;s high-performance smart contract platform for near-instant execution.",
       icon: <Zap className="text-indigo-600" />,
     },
     {

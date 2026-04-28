@@ -11,7 +11,7 @@ import Link from "next/link";
 
 export default function AdminPanel() {
   const { address, sign } = useStellar();
-  const [pendingNfts, setPendingNfts] = useState<any[]>([]);
+  const [pendingNfts, setPendingNfts] = useState<NFT[]>([]);
   const [stats, setStats] = useState({ pending: 0, verified: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const [actionStatus, setActionStatus] = useState<string | null>(null);
@@ -36,9 +36,12 @@ export default function AdminPanel() {
   };
 
   useEffect(() => {
-    fetchPending();
+    const timer = setTimeout(() => {
+      fetchPending();
+    }, 0);
+    return () => clearTimeout(timer);
   }, [address]);
-  const handleVerify = async (nft: any) => {
+  const handleVerify = async (nft: NFT) => {
     setActionStatus(`Releasing ${nft.name}...`);
     try {
       const marketplace = new Contract(MARKETPLACE_ID);
@@ -62,7 +65,7 @@ export default function AdminPanel() {
       let hasTrustline = false;
       try {
         const creatorAccount = await horizon.loadAccount(nft.creator);
-        hasTrustline = creatorAccount.balances.some((b: any) => 
+        hasTrustline = (creatorAccount.balances as Array<{ asset_code?: string; asset_issuer?: string }>).some((b) => 
           b.asset_code === NFTMKT_ASSET_CODE && b.asset_issuer === NFTMKT_ISSUER
         );
       } catch (e) {
@@ -88,7 +91,7 @@ export default function AdminPanel() {
           const { hash: rewardHash } = await sorobanRpc.sendTransaction(TransactionBuilder.fromXDR(signedReward, NETWORK_PASSPHRASE));
           await waitTransaction(rewardHash);
           console.log("Reward sent successfully!");
-        } catch (e: any) {
+        } catch (e: unknown) {
           console.error("Reward distribution failed:", e);
           // Non-blocking error
         }
@@ -117,8 +120,8 @@ export default function AdminPanel() {
         const { hash: mintHash } = await sorobanRpc.sendTransaction(TransactionBuilder.fromXDR(signedMint, NETWORK_PASSPHRASE));
         setActionStatus("Confirming Minting...");
         await waitTransaction(mintHash);
-      } catch (e: any) {
-        if (e.toString().includes("already minted") || e.toString().includes("InvalidAction")) {
+      } catch (e: unknown) {
+        if (String(e).includes("already minted") || String(e).includes("InvalidAction")) {
           console.log("NFT exists, proceeding...");
         } else {
           throw e;
@@ -185,8 +188,8 @@ export default function AdminPanel() {
       triggerSuccessBurst();
       setActionStatus(null);
       fetchPending();
-    } catch (err: any) {
-      setActionStatus(`Error: ${err.message}`);
+    } catch (err: unknown) {
+      setActionStatus(`Error: ${err instanceof Error ? err.message : String(err)}`);
     }
   };
 
